@@ -18,9 +18,9 @@ set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
 set_property(CACHE GLSystem PROPERTY STRINGS "Desktop OpenGL" "OpenGL ES")
 
 if(GLES)
-    set(GLSystem "OpenGL ES")
+    set(GLSystem "OpenGL ES" CACHE STRING "The OpenGL system to be used")
 elseif(GL)
-    set(GLSystem "Desktop OpenGL")
+    set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
 else(GLES)
 #-------------------------------------------------------------------------------
 #check if we're running on Raspberry Pi
