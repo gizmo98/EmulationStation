@@ -14,39 +14,30 @@ LIST(APPEND CMAKE_MODULE_PATH
 
 #-------------------------------------------------------------------------------
 #set up OpenGL system variable
-set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
-set_property(CACHE GLSystem PROPERTY STRINGS "Desktop OpenGL" "OpenGL ES")
-
 if(GLES)
     set(GLSystem "OpenGL ES" CACHE STRING "The OpenGL system to be used")
 elseif(GL)
     set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
-else(GLES)
 #-------------------------------------------------------------------------------
 #check if we're running on Raspberry Pi
-    MESSAGE("Looking for bcm_host.h")
-    if(EXISTS "/opt/vc/include/bcm_host.h")
-        MESSAGE("bcm_host.h found")
-        set(BCMHOST found)
-        set(GLSystem "OpenGL ES")
-    else()
-        MESSAGE("bcm_host.h not found")
-    endif()
-
+elseif(EXISTS "/opt/vc/include/bcm_host.h")
+    MESSAGE("bcm_host.h found")
+    set(BCMHOST found)
+    set(GLSystem "OpenGL ES" CACHE STRING "The OpenGL system to be used")
 #-------------------------------------------------------------------------------
 #check if we're running on olinuxino / odroid / etc
-    MESSAGE("Looking for libMali.so")
-    if(EXISTS "/usr/lib/libMali.so" OR
-        EXISTS "/usr/lib/arm-linux-gnueabihf/libMali.so" OR
-        EXISTS "/usr/lib/aarch64-linux-gnu/libMali.so" OR
-        EXISTS "/usr/lib/arm-linux-gnueabihf/mali-egl/libmali.so" OR
-        EXISTS "/usr/lib/arm-linux-gnueabihf/libmali.so")
-        MESSAGE("libMali.so found")
-        set(GLSystem "OpenGL ES")
-    else()
-        MESSAGE("libMali.so not found")
-    endif()
+elseif(EXISTS "/usr/lib/libMali.so" OR
+    EXISTS "/usr/lib/arm-linux-gnueabihf/libMali.so" OR
+    EXISTS "/usr/lib/aarch64-linux-gnu/libMali.so" OR
+    EXISTS "/usr/lib/arm-linux-gnueabihf/mali-egl/libmali.so" OR
+    EXISTS "/usr/lib/arm-linux-gnueabihf/libmali.so")
+    MESSAGE("libMali.so found")
+    set(GLSystem "OpenGL ES" CACHE STRING "The OpenGL system to be used")
+else()
+    set(GLSystem "Desktop OpenGL" CACHE STRING "The OpenGL system to be used")
 endif(GLES)
+
+set_property(CACHE GLSystem PROPERTY STRINGS "Desktop OpenGL" "OpenGL ES")
 
 #finding necessary packages
 #-------------------------------------------------------------------------------
